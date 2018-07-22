@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const List = mongoose.model('List');
 
 exports.index = async (req, res) => {
-  const lists = await List.find();
+  const lists = await List.find({owner: req.user._id});
   res.render('lists', {lists});
 }
 
