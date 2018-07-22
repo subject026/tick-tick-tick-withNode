@@ -3,6 +3,7 @@ require('dotenv').config({path: 'variables.env'});
 
 // Models
 require('./models/User');
+require('./models/List');
 
 // Connect to DB
 mongoose.connect(process.env.DATABASE);

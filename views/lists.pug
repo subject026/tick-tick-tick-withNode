@@ -5,7 +5,9 @@ block content
   h1 Lists Home
 
   .lists
-  
-    button.list-save(rel="js-list-save") BOOM
+    form.add-list(action="/lists" method="POST" rel="js-add-list-form")
+      label(for="title") Title
+      input(type="text" name="title" rel="js-list-save-input").add-list__input
+      button.list-save(type="submit") BOOM
 
   include partials/_messages
