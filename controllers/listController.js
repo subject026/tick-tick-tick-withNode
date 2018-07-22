@@ -2,6 +2,13 @@ exports.index = (req, res) => {
   res.render('lists');
 }
 
+// AJAX API
+
 exports.save = (req, res) => {
-  res.send('save');
+  const save = {
+    data: {
+      message: "Saved my lovely!"
+    }
+  }
+  res.json(save);
 }
