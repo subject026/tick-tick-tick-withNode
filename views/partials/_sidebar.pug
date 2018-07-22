@@ -5,12 +5,12 @@
   .sidebar__inner
 
     ul.nav
-      if currentPage == "profile"
+      if currentPage == "lists"
         -const class1 = "current-page"
-        li: a.nav__link(class=`${class1}` href="/profile") Profile  
+        li: a.nav__link(class=`${class1}` href="/lists") Lists Home  
       else
         -const class1 = ""
-        li: a.nav__link(class=`${class1}` href="/profile") Profile  
+        li: a.nav__link(class=`${class1}` href="/lists") Lists Home  
 
       if user.isAdmin
         if currentPage == "admin"
