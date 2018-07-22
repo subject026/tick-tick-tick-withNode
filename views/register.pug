@@ -1,0 +1,28 @@
+extends layout
+
+block body
+
+  section.login
+  
+    form.login__form(action="/register" method="POST")
+
+      .form__item
+        label.form__label(for="email") Email
+        if body
+          input.login__input(name="email" id="email" type="email"  value=body.email required)
+        else
+          input.login__input(name="email" id="email" type="email" required)
+
+      .form__item
+        label.form__label(for="password") Password
+        input.login__input(name="password" id="password" type="password")
+
+      .form__item
+        label.form__label(for="passwordCOnf") Confirm Password
+        input.login__input(name="passwordConf" id="passwordConf" type="password")
+
+      input.login__input.login__button(type="submit" value="Register")
+
+      a.form__link(href="/") Login
+
+      include partials/_messages

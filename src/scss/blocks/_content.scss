@@ -1,0 +1,14 @@
+.sidebar {
+  background-color: $grey2;
+}
+
+.content {
+  background-color: $offWhite;
+  min-height: 100vh;
+}
+
+.content__inner {
+  max-width: 600px;
+  margin: auto;
+  padding: 15px;
+}

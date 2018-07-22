@@ -1,0 +1,36 @@
+
+
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav__link {
+  color: $grey1;
+  font-size: 22px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  line-height: 1.3;
+  &:hover {
+    color: $offWhite;
+  }
+}
+
+.current-page {
+  color: lighten($grey1, 30%);
+}
+
+.mob-nav {
+  padding: 20px;
+  font-size: 30px;
+  position: absolute;
+  right: 0;
+  &:hover {
+    background-color: red;
+    cursor: pointer;
+  }
+  @media(min-width: 950px){
+    display: none;
+  }
+}

@@ -1,0 +1,12 @@
+extends home
+
+block content
+  
+  .user-table
+
+    for user in users
+      
+      .user-table__item(data-id=`${user._id}`)
+        .user-table__header.user__title--hover(rel="js-userTitle")
+          span.user__title= user.email
+          i.fas.fa-cog.user__button(rel="js-userOptions")

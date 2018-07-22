@@ -1,0 +1,20 @@
+$white: #fff;
+$offWhite: #f0f0f0;
+$grey1: #b5b5b5;
+$grey2: #4c4c4c;
+$grey3: #3c3c3c;
+
+$userHover: lighten($grey1, 12%);
+$userOpen: $grey3;
+
+$userText: $grey3;
+$userToggle: $grey1;
+$userToggleHover: darken($grey1, 50%);
+
+$userTextOpen: $grey1;
+$userToggleOpen: $grey1;
+$userToggleHoverOpen: lighten($grey1, 50%);
+
+
+$userToggleHoverOpen: $grey1;
+$userToggleHover: $grey1;

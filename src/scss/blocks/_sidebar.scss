@@ -1,0 +1,27 @@
+.sidebar {
+  background-color: $grey3;
+  transition: transform 0.3s ease;
+  position: fixed;
+  transform: translateX(-100%);
+  @media(min-width: 950px){
+    position: initial;
+    transform: translateX(0);
+  }
+}
+
+.sidebar--show {
+  transform: translateX(0);
+}
+
+.sidebar__inner {
+  max-width: 180px;
+  margin: auto;
+  padding: 60px;
+}
+
+.sidebar__logout-link {
+  color: darken($grey1, 10%);
+}
+
+
+

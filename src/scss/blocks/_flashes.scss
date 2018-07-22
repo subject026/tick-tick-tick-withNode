@@ -1,0 +1,23 @@
+.flash-box {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.flash-content {
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.flash__success {
+  background-color: green;
+  color: white;
+}
+
+.flash__text {
+  font-size: 30px;
+}
+
+.flash--hidden {
+  transform: translateY(100%);
+}

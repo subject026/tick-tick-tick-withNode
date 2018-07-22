@@ -1,0 +1,23 @@
+-const hiddenClass = ""
+
+.sidebar(class=`${hiddenClass}`)
+
+  .sidebar__inner
+
+    ul.nav
+      if currentPage == "profile"
+        -const class1 = "current-page"
+        li: a.nav__link(class=`${class1}` href="/profile") Profile  
+      else
+        -const class1 = ""
+        li: a.nav__link(class=`${class1}` href="/profile") Profile  
+
+      if user.isAdmin
+        if currentPage == "admin"
+          -const markAdminPage = "current-page"
+          li: a.nav__link(class=`${markAdminPage}` href="/admin") User Admin
+        else
+          -const markAdminPage = ""
+          li: a.nav__link(class=`${markAdminPage}` href="/admin") User Admin
+    h5 Logged in as: #{user.email}
+    a.sidebar__logout-link(href="/logout") Logout

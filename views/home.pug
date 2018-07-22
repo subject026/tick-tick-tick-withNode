@@ -1,0 +1,13 @@
+extends layout
+
+block body
+
+  .main-container
+
+    include partials/_sidebar
+
+    .content
+      .content__inner
+        .mob-nav(rel="js-mob-nav-toggle")
+          i.fas.fa-ellipsis-v
+        block content

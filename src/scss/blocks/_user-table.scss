@@ -1,0 +1,74 @@
+.user-table {
+  padding: 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-table__item {
+  background-color: lighten($grey1, 15%);
+  margin: 10px 0;
+  overflow: hidden;
+  p {
+    margin: 0;
+  }
+}
+
+.user__button {
+  cursor: pointer;
+  padding: 10px;
+  flex-grow: 1;
+}
+
+.user-table__item {
+  .user__button {
+    color: $userToggle;
+    &:hover {
+      color: $userToggleHover;
+    }
+  }  
+}
+
+.user-options {
+  padding: 20px;
+  margin: 10px;
+  overflow: hidden;
+}
+
+.user-options--hidden {
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin: 0;
+}
+
+
+// Item Header
+
+.user-table__header {
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+}
+
+.user__title {
+  display: inline-block;
+  flex-grow: 9;
+  padding: 10px;
+  padding-left: 30px;
+}
+
+.user__title--hover:hover {
+  background-color: $userHover;
+}
+
+
+.user-title--open {
+  background-color: $userOpen;
+  color: $userTextOpen;
+  .user__button {
+    color: $userToggleOpen;
+    &:hover {
+      color: $userToggleHoverOpen;
+    }
+  }
+}

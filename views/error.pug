@@ -1,0 +1,7 @@
+extends layout
+
+block body
+
+  p #{err.status} - #{err.message}
+  pre= err.stack
+  p: a(href="/") Home

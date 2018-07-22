@@ -1,0 +1,65 @@
+.login {
+  background-color: $offWhite;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login__form {
+  width: 400px;
+}
+
+/* Override yellow input bg for auto-completed data in Chrome ???? */
+// input:-webkit-autofill {
+//     -webkit-box-shadow: 0 0 0px 1000px white inset;   
+// }
+
+.login__input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  margin-bottom: 20px;
+  border: 0;
+  font-size: inherit;
+  padding: 10px 0;
+  padding-left: 10px;
+  background-color: $white;
+}
+
+.login__input:not([type="submit"]) {
+  -webkit-text-fill-color: $grey2 !important;
+  box-shadow: 0px 0px 25px 0px rgba(0,0,0,0.10);
+}
+
+.login__button {
+  padding: 15px;
+  margin-top: 30px;
+  background-color: $grey2;
+  color: $grey1; 
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  &:hover {
+    background-color: darken($grey2, 5%);
+    color: $offWhite;
+  }
+}
+
+
+.form__label {
+  display: inline-block;
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: $grey2;
+}
+
+.form__link {
+  font-size: 16px;
+  color: lighten($grey2, 40%);
+  transition: color 0.3s ease;
+  &:hover {
+    color: $grey2;
+  }
+}
