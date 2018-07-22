@@ -4,6 +4,7 @@ const userController = require('./controllers/userController');
 const authController = require('./controllers/authController');
 const adminController = require('./controllers/adminController');
 const listController = require('./controllers/listController');
+const itemController = require('./controllers/itemController');
 
 router.get('/', (req, res) => {
   if (!req.user) return authController.loginForm(req, res);
@@ -18,6 +19,7 @@ router.get('/logout', authController.logout);
 
 router.get('/lists', authController.isLoggedIn, listController.index);
 router.post('/lists', authController.isLoggedIn, listController.save);
+router.post('/items', authController.isLoggedIn, itemController.save);
 
 router.get('/admin', authController.isLoggedIn, adminController.userAdmin);
 

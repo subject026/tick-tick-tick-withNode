@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const List = mongoose.model('List');
+const Item = mongoose.model('Item');
 
 exports.index = async (req, res) => {
   const lists = await List.find();
@@ -9,19 +9,18 @@ exports.index = async (req, res) => {
 // AJAX API
 
 exports.save = async (req, res) => {
-  console.log("Save a list?!?!?!")
-  // console.log(req.user);
-  req.body.owner = req.user._id;
-  console.log(req.body)
-  const list = new List(req.body)
-  try {
-    await list.save();
-  } catch(error) {
-    res.json({error: error});
-    return;
-  }
+  console.log("Save an ITEM!?!?!");
+  console.log(req.body);
+  // const list = new Item(req.body)
+  // try {
+  //   await list.save();
+  // } catch(error) {
+  //   res.json({error: error});
+  //   return;
+  // }
   const save = {
     data: {
+      success: true,
       message: "Saved my lovely!"
     }
   }

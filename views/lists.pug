@@ -5,9 +5,27 @@ block content
   h1 Lists Home
 
   .lists
+
     form.add-list(action="/lists" method="POST" rel="js-add-list-form")
       label(for="title") Title
       input(type="text" name="title" rel="js-list-save-input").add-list__input
       button.list-save(type="submit") BOOM
+
+    .lists__container
+
+      for list in lists
+        
+        .list
+          
+          .list__title
+            span= list.title
+            i.fas.fa-cog.list__open(rel="js-")
+          
+          .list__content
+
+          .list__options
+
+            input.list__options__input(type="text" rel="js-new-list-input")
+            button.button.list__options__save(rel="js-new-list-save") Add item
 
   include partials/_messages

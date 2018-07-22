@@ -20693,10 +20693,9 @@ function init(){
 
   const newListForm = $('[rel="js-add-list-form"]')[0];
   const newTextInput = $('[rel="js-list-save-input"]')[0];
-  console.log(newListForm);
-  console.log(newTextInput);
 
   function saveList(event){
+
     event.preventDefault();
     console.log(newTextInput.value)
     const data = {
@@ -20704,9 +20703,9 @@ function init(){
     }
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.action, data)
       .then(response => {
-        console.log(response);    
+        // window.reload();
       }).catch(
-        // console.log(console.error)
+        console.log(console.error)
       );
   }
 
