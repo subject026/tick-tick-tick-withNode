@@ -1,5 +1,29 @@
 
 
+    Pattern - Flow
+************************
+
+Initial Page Load:::
+
+
+  check whether DB or local data is newest 
+
+  if DB is newer - clear local storage and reload local from DB
+
+  if local is newer - Update DB based on localStorage
+
+  Render page based on localStorage
+
+
+Front end action (add/update/delete list/item)
+
+  update localStorage
+  update DOM
+  update DB
+
+
+
+
     Functionality to add
 
 +++++++++++++++++++++++++++++++
