@@ -8720,6 +8720,7 @@ function removeModal(){
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUser", function() { return deleteUser; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItem", function() { return saveItem; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
@@ -8747,7 +8748,19 @@ function deleteUser(event) {
     });
 }
 
-
+function saveItem(){
+  const parent = event.target.parentElement.parentElement;
+  const parentId = parent.dataset.id;
+  const title = parent.querySelector('input').value;
+  const url = "/items";
+  const data = {
+    list: parentId,
+    title: title
+  }
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, data)
+    .then(response => console.log(response))
+    .catch(console.log(error));
+}
 
 
 
@@ -20685,7 +20698,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(56);
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
 
 
 
@@ -20693,15 +20706,11 @@ const newListForm = $('[rel="js-add-list-form"]')[0];
 const newTextInput = $('[rel="js-list-save-input"]')[0];
 const listContainer = $('.lists__container')[0];
 
-// function saveItem(){
-//   console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-// }
-
-// All lists rendered by template have buttons to add items
-const listButtons = $('[rel="js-new-list-save"]');
+// Bind event to add item to each list
+const listButtons = $('[rel="js-new-item-save"]');
 listButtons.forEach(button => {
   console.log(button.parentElement.parentElement.dataset.id) // List ID
-  button.addEventListener('click', _item__WEBPACK_IMPORTED_MODULE_1__["default"]);
+  button.addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_1__["saveItem"]);
 });
 
 function renderList(title){
@@ -20726,12 +20735,14 @@ function saveList(event){
 }
 
 
-
-
 function init(){
+  // Main form to add lists
   newListForm.addEventListener('submit', saveList);
+  // Buttons to add items to each individual list already on page
+  document.querySelectorAll('[rel="js-new-item-save"]').forEach(button => {
+    button.addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_1__["saveItem"]);
+  });
 }
-
 
 const List = {
   init: init 
@@ -20740,20 +20751,7 @@ const List = {
 
 
 /***/ }),
-/* 56 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItem", function() { return saveItem; });
-function saveItem(){
-  // console.log(event.target)
-  console.log("SAVEEEEEEEEE mooooooooooo")
-}
-
-
-
-/***/ }),
+/* 56 */,
 /* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 

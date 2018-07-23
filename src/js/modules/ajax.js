@@ -20,6 +20,18 @@ function deleteUser(event) {
     });
 }
 
+function saveItem(){
+  const parent = event.target.parentElement.parentElement;
+  const parentId = parent.dataset.id;
+  const title = parent.querySelector('input').value;
+  const url = "/items";
+  const data = {
+    list: parentId,
+    title: title
+  }
+  Axios.post(url, data)
+    .then(response => console.log(response))
+    .catch(console.log(error));
+}
 
-
-export { deleteUser }
+export { deleteUser, saveItem }

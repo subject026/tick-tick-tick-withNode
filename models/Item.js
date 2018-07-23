@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const mongooseMongodbErrors = require('mongoose-mongodb-errors');
 
 const itemSchema = new mongoose.Schema({
-  description: {
+  title: {
     type: String,
     required: true
   },
@@ -11,9 +11,8 @@ const itemSchema = new mongoose.Schema({
     default: Date.now
   },
   list: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'List',
-    required: 'You must supply a list'
+    type: String,
+    required: true
   },
 });
 

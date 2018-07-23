@@ -1,16 +1,12 @@
 import axios from 'axios';
-import saveItem from './item';
+import { saveItem } from './ajax';
 
 const newListForm = $('[rel="js-add-list-form"]')[0];
 const newTextInput = $('[rel="js-list-save-input"]')[0];
 const listContainer = $('.lists__container')[0];
 
-// function saveItem(){
-//   console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
-// }
-
-// All lists rendered by template have buttons to add items
-const listButtons = $('[rel="js-new-list-save"]');
+// Bind event to add item to each list
+const listButtons = $('[rel="js-new-item-save"]');
 listButtons.forEach(button => {
   console.log(button.parentElement.parentElement.dataset.id) // List ID
   button.addEventListener('click', saveItem);
@@ -38,12 +34,14 @@ function saveList(event){
 }
 
 
-
-
 function init(){
+  // Main form to add lists
   newListForm.addEventListener('submit', saveList);
+  // Buttons to add items to each individual list already on page
+  document.querySelectorAll('[rel="js-new-item-save"]').forEach(button => {
+    button.addEventListener('click', saveItem);
+  });
 }
-
 
 const List = {
   init: init 
