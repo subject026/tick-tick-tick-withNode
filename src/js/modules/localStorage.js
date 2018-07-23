@@ -50,7 +50,6 @@ function getItemsLocal(listId){
       itemsArray.push(obj);
     }
   }
-  console.log(itemsArray)
   return itemsArray;
 }
 

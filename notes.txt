@@ -1,3 +1,28 @@
+
+
+    Functionality to add
+
++++++++++++++++++++++++++++++++
+
+
+// Turn input/button to add item into a form so can submit with return
+// Clear input & retain focus on submit
+
+
 // On save list/item  - save to local storage
                       - save to DB
                       - render to DOM
+
+
+
+
+
+
+
+
+
+-------------------------------------------------------
+
+LATERZ....
+
+- recurring list (daily todo)

@@ -287,9 +287,7 @@ async function toggleListOpen(){
     list.appendChild(Object(_templates__WEBPACK_IMPORTED_MODULE_1__["buildListContent"])(items));   
     const options = list.querySelector('.list__options');
     // bind save item event
-    console.log(list)
-    list.querySelector('[rel="js-add-item"]').addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_2__["saveItem"])
-
+    list.querySelector('[rel="js-add-item"]').addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_2__["saveItem"]);
   } else {
     list.classList.toggle('list--closed');
     // remove list content element
@@ -8786,7 +8784,6 @@ function buildList(data) {
 
 
 function buildListContent(items){
-  console.log(items)
   const el = document.createElement('div');
   el.classList = "list__content"; 
   el.setAttribute('rel', 'js-list-content');
@@ -8799,10 +8796,8 @@ function buildListContent(items){
   // data from ajax call
   if (items.length > 0) {
     const optionsEl = el.querySelector('.list__options');
-    console.log(optionsEl)
     items.forEach(item => {
       el.insertBefore(buildListItem(item), optionsEl);
-      console.log(item);
     })  
   }
   return el;
@@ -20957,7 +20952,6 @@ function getItemsLocal(listId){
       itemsArray.push(obj);
     }
   }
-  console.log(itemsArray)
   return itemsArray;
 }
 

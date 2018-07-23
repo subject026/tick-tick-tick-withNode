@@ -30,7 +30,6 @@ function buildList(data) {
 
 
 function buildListContent(items){
-  console.log(items)
   const el = document.createElement('div');
   el.classList = "list__content"; 
   el.setAttribute('rel', 'js-list-content');
@@ -43,10 +42,8 @@ function buildListContent(items){
   // data from ajax call
   if (items.length > 0) {
     const optionsEl = el.querySelector('.list__options');
-    console.log(optionsEl)
     items.forEach(item => {
       el.insertBefore(buildListItem(item), optionsEl);
-      console.log(item);
     })  
   }
   return el;

@@ -84,9 +84,7 @@ async function toggleListOpen(){
     list.appendChild(buildListContent(items));   
     const options = list.querySelector('.list__options');
     // bind save item event
-    console.log(list)
-    list.querySelector('[rel="js-add-item"]').addEventListener('click', saveItem)
-
+    list.querySelector('[rel="js-add-item"]').addEventListener('click', saveItem);
   } else {
     list.classList.toggle('list--closed');
     // remove list content element
