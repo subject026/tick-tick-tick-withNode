@@ -16,6 +16,9 @@ const listSchema = new mongoose.Schema({
   }
 });
 
+
+
+
 // Virtual populate in mongoose
 // By default virtual fields will not be included in JSON output but data is still there?!?!
 // Adds new field to schema based on a query

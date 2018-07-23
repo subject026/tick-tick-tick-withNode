@@ -15,7 +15,7 @@ block content
 
       for list in lists
         
-        .list
+        .list(data-id=`${list._id}`)
           
           .list__title
             span= list.title

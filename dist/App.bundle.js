@@ -89,7 +89,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
-module.exports = __webpack_require__(56);
+module.exports = __webpack_require__(57);
 
 
 /***/ }),
@@ -20685,30 +20685,50 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(56);
 
 
-// Bind events to text box and button
 
-function init(){
+const newListForm = $('[rel="js-add-list-form"]')[0];
+const newTextInput = $('[rel="js-list-save-input"]')[0];
+const listContainer = $('.lists__container')[0];
 
-  const newListForm = $('[rel="js-add-list-form"]')[0];
-  const newTextInput = $('[rel="js-list-save-input"]')[0];
+// function saveItem(){
+//   console.log("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ")
+// }
 
-  function saveList(event){
+// All lists rendered by template have buttons to add items
+const listButtons = $('[rel="js-new-list-save"]');
+listButtons.forEach(button => {
+  console.log(button.parentElement.parentElement.dataset.id) // List ID
+  button.addEventListener('click', _item__WEBPACK_IMPORTED_MODULE_1__["default"]);
+});
 
-    event.preventDefault();
-    console.log(newTextInput.value)
-    const data = {
-      title: newTextInput.value
-    }
-    axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.action, data)
-      .then(response => {
-        // window.reload();
-      }).catch(
-        console.log(console.error)
-      );
+function renderList(title){
+  const list = document.createElement('div');
+  list.classList = "list";
+  list.innerHTML = `
+    <div>>h1>List Title: ${title}</h1></div>`;
+  listContainer.appendChild(list);
   }
 
+function saveList(event){
+  event.preventDefault();
+  const data = {
+    title: newTextInput.value
+  }
+  axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.action, data)
+    .then(response => {
+      renderList(newTextInput.value);
+    }).catch(
+      console.log(console.error)
+    );
+}
+
+
+
+
+function init(){
   newListForm.addEventListener('submit', saveList);
 }
 
@@ -20721,6 +20741,20 @@ const List = {
 
 /***/ }),
 /* 56 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItem", function() { return saveItem; });
+function saveItem(){
+  // console.log(event.target)
+  console.log("SAVEEEEEEEEE mooooooooooo")
+}
+
+
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
