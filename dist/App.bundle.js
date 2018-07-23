@@ -271,9 +271,14 @@ function renderLists(lists) {
 }
 
 async function toggleListOpen(){
-  // if open, close  
   const list = event.target.parentElement.parentElement;
   if (list.classList.contains('list--closed')) {
+    // if closed, open it...
+    /*
+    
+      Here we'll switch to getting data from local storage 
+    
+    */  
     list.classList.toggle('list--closed');
     const id = list.dataset.id;
     const items = await Object(_ajax__WEBPACK_IMPORTED_MODULE_2__["getItems"])(id);
@@ -290,9 +295,6 @@ async function toggleListOpen(){
   }
 }
 
-function openList(){
-
-}
 
 function closeList(list){
   const listContent = list.querySelector('[rel="js-list-content"]');
@@ -8883,11 +8885,11 @@ async function getLists(){
 
 
 async function getItems(id){
-  const parent = document.querySelector(`[data-id="${id}"]`);
-  const url = `/API/items?listId=${id}`;
-  const items = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(url);
-  console.log("getItems() response : ", items)
-  return items;
+  console.log("getItems()");
+  // Make one request for all items  
+  const response = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(`/API/items`);
+  console.log(response.data)
+  return response.data;
 }
 
 
@@ -20861,6 +20863,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
+/* harmony import */ var _localStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(59);
+
 
 
 
@@ -20877,12 +20881,11 @@ listButtons.forEach(button => {
 
 
 async function init(){
-  // If lists div empty get lists via ajax & render
-  if (listContainer.innerHTML == '') {
-    const lists = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getLists"])();
-    Object(_DOM__WEBPACK_IMPORTED_MODULE_1__["renderLists"])(lists);
-  }
-  // Main form to add lists
+  const lists = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getLists"])();
+  Object(_DOM__WEBPACK_IMPORTED_MODULE_1__["renderLists"])(lists);
+  // Load all items into local storage
+  Object(_localStorage__WEBPACK_IMPORTED_MODULE_2__["loadItems"])();
+  // add list form event
   newListForm.addEventListener('submit', _ajax__WEBPACK_IMPORTED_MODULE_0__["saveList"]);
 }
 
@@ -20897,6 +20900,24 @@ const List = {
 /***/ (function(module, exports, __webpack_require__) {
 
 // extracted by mini-css-extract-plugin
+
+/***/ }),
+/* 58 */,
+/* 59 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadItems", function() { return loadItems; });
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
+
+
+async function loadItems(){
+  const items = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getItems"])();
+  
+}
+
+
 
 /***/ })
 /******/ ]);

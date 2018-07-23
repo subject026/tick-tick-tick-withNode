@@ -1,5 +1,6 @@
-import { saveItem, saveList, getLists } from './ajax';
+import { saveItem, saveList, getLists, getItems } from './ajax';
 import { renderLists } from './DOM';
+import { loadItems } from './localStorage';
 
 const newListForm = $('[rel="js-add-list-form"]')[0];
 const newTextInput = $('[rel="js-list-save-input"]')[0];
@@ -14,12 +15,11 @@ listButtons.forEach(button => {
 
 
 async function init(){
-  // If lists div empty get lists via ajax & render
-  if (listContainer.innerHTML == '') {
-    const lists = await getLists();
-    renderLists(lists);
-  }
-  // Main form to add lists
+  const lists = await getLists();
+  renderLists(lists);
+  // Load all items into local storage
+  loadItems();
+  // add list form event
   newListForm.addEventListener('submit', saveList);
 }
 

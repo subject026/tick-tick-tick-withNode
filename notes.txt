@@ -1,7 +1,4 @@
 
+*** Get data saving into local storage...
 
-= Textox - save event button
-
-= render existing lists in template hidden & remove classes on page render
-
-= open list event - ajax call for list items
+*** Switch open list to get data from local Storage

@@ -69,9 +69,14 @@ function renderLists(lists) {
 }
 
 async function toggleListOpen(){
-  // if open, close  
   const list = event.target.parentElement.parentElement;
   if (list.classList.contains('list--closed')) {
+    // if closed, open it...
+    /*
+    
+      Here we'll switch to getting data from local storage 
+    
+    */  
     list.classList.toggle('list--closed');
     const id = list.dataset.id;
     const items = await getItems(id);
@@ -88,9 +93,6 @@ async function toggleListOpen(){
   }
 }
 
-function openList(){
-
-}
 
 function closeList(list){
   const listContent = list.querySelector('[rel="js-list-content"]');

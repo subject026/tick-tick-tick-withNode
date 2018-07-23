@@ -51,11 +51,11 @@ async function getLists(){
 
 
 async function getItems(id){
-  const parent = document.querySelector(`[data-id="${id}"]`);
-  const url = `/API/items?listId=${id}`;
-  const items = await Axios.get(url);
-  console.log("getItems() response : ", items)
-  return items;
+  console.log("getItems()");
+  // Make one request for all items  
+  const response = await Axios.get(`/API/items`);
+  console.log(response.data)
+  return response.data;
 }
 
 export { deleteUser, saveItem, saveList, getLists, getItems }

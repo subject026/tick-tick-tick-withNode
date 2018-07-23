@@ -27,8 +27,6 @@ exports.saveItem = async (req, res) => {
 }
 
 exports.getItems = async (req, res) => {
-  const parentId = req.query.listId;
-  const items = await Item.find({parent: parentId});
-  console.log("item.find()... : ", items);
+  const items = await Item.find({owner: req.user._id});
   res.json(items);
 }
