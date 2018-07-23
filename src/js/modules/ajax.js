@@ -40,8 +40,6 @@ async function saveList(event) {
     title: title
   }
   const res = await Axios.post(this.action, data);
-  console.log("saveList() response: ", res.data)
-
 }
 
 async function getLists(){
@@ -51,10 +49,7 @@ async function getLists(){
 
 
 async function getItems(id){
-  console.log("getItems()");
-  // Make one request for all items  
   const response = await Axios.get(`/API/items`);
-  console.log(response.data)
   return response.data;
 }
 

@@ -1,6 +1,6 @@
-import { saveItem, saveList, getLists, getItems } from './ajax';
+import { saveItem, saveList } from './ajax';
 import { renderLists } from './DOM';
-import { loadItems } from './localStorage';
+import { loadItems, loadLists, getListsLocal } from './localStorage';
 
 const newListForm = $('[rel="js-add-list-form"]')[0];
 const newTextInput = $('[rel="js-list-save-input"]')[0];
@@ -15,9 +15,11 @@ listButtons.forEach(button => {
 
 
 async function init(){
-  const lists = await getLists();
-  renderLists(lists);
-  // Load all items into local storage
+  // 1. load lists into local storage
+  loadLists();
+  // 2. get lists out of local storage and render to page
+  renderLists(getListsLocal())
+  // 3. load items into local storage
   loadItems();
   // add list form event
   newListForm.addEventListener('submit', saveList);

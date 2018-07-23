@@ -61,11 +61,16 @@ function renderList(title){
 
 function renderLists(lists) {
   const container = document.querySelector('[rel="js-list-container"]');
-  lists.forEach(data => {
+  for (let key in lists) {
+    const data = {
+      _id: key,
+      title: lists[key].title,
+      parent: lists[key].parent
+    }
     const list = buildList(data);
     list.querySelector('.list__open').addEventListener('click', toggleListOpen);
     container.appendChild(list);
-  });
+  };
 }
 
 async function toggleListOpen(){
