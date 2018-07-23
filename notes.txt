@@ -1,4 +1,3 @@
-
-*** Get data saving into local storage...
-
-*** Switch open list to get data from local Storage
+// On save list/item  - save to local storage
+                      - save to DB
+                      - render to DOM

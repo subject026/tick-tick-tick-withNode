@@ -39,7 +39,19 @@ function getListsLocal(){
 }
 
 function getItemsLocal(listId){
-
+  const items = JSON.parse(localStorage.getItem("items"));
+  const itemsArray = [];
+  for (let item in items) {
+    if (items[item].parent == listId) {
+      const obj = {
+        _id: items[item]._id,
+        title: items[item].title
+      }
+      itemsArray.push(obj);
+    }
+  }
+  console.log(itemsArray)
+  return itemsArray;
 }
 
 

@@ -200,6 +200,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
+/* harmony import */ var _localStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
+
 
 
 
@@ -277,16 +279,11 @@ function renderLists(lists) {
 
 async function toggleListOpen(){
   const list = event.target.parentElement.parentElement;
-  if (list.classList.contains('list--closed')) {
-    // if closed, open it...
-    /*
-    
-      Here we'll switch to getting data from local storage 
-    
-    */  
+  // if closed, open it...
+  if (list.classList.contains('list--closed')) {  
     list.classList.toggle('list--closed');
-    const id = list.dataset.id;
-    const items = await Object(_ajax__WEBPACK_IMPORTED_MODULE_2__["getItems"])(id);
+    const listId = list.dataset.id;
+    const items = Object(_localStorage__WEBPACK_IMPORTED_MODULE_3__["getItemsLocal"])(listId);
     list.appendChild(Object(_templates__WEBPACK_IMPORTED_MODULE_1__["buildListContent"])(items));   
     const options = list.querySelector('.list__options');
     // bind save item event
@@ -8788,7 +8785,8 @@ function buildList(data) {
 }
 
 
-function buildListContent(data){
+function buildListContent(items){
+  console.log(items)
   const el = document.createElement('div');
   el.classList = "list__content"; 
   el.setAttribute('rel', 'js-list-content');
@@ -8799,7 +8797,6 @@ function buildListContent(data){
   </div>`;
   // build and append list items based on ajax data
   // data from ajax call
-  const items = data.data;
   if (items.length > 0) {
     const optionsEl = el.querySelector('.list__options');
     console.log(optionsEl)
@@ -20949,7 +20946,19 @@ function getListsLocal(){
 }
 
 function getItemsLocal(listId){
-
+  const items = JSON.parse(localStorage.getItem("items"));
+  const itemsArray = [];
+  for (let item in items) {
+    if (items[item].parent == listId) {
+      const obj = {
+        _id: items[item]._id,
+        title: items[item].title
+      }
+      itemsArray.push(obj);
+    }
+  }
+  console.log(itemsArray)
+  return itemsArray;
 }
 
 

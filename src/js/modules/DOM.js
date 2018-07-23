@@ -1,6 +1,7 @@
 import TweenLite from 'gsap';
 import { buildList, buildListContent } from './templates';
 import { getItems, saveItem } from './ajax';
+import { getItemsLocal } from './localStorage';
 
 //
 // user admin consatina
@@ -75,16 +76,11 @@ function renderLists(lists) {
 
 async function toggleListOpen(){
   const list = event.target.parentElement.parentElement;
-  if (list.classList.contains('list--closed')) {
-    // if closed, open it...
-    /*
-    
-      Here we'll switch to getting data from local storage 
-    
-    */  
+  // if closed, open it...
+  if (list.classList.contains('list--closed')) {  
     list.classList.toggle('list--closed');
-    const id = list.dataset.id;
-    const items = await getItems(id);
+    const listId = list.dataset.id;
+    const items = getItemsLocal(listId);
     list.appendChild(buildListContent(items));   
     const options = list.querySelector('.list__options');
     // bind save item event
