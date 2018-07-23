@@ -19,23 +19,22 @@ async function loadLists(){
 }
 
 async function loadItems(){
+  // Items loaded into local storage 
   const items = await getItems();
-  console.log(items)
-  const itemsArray = items.reduce((total, item) => {
+  const itemsObj = items.reduce((total, item) => {
     total[item._id] = {
       title: item.title,
-      owner: item.owner,
-      parent: item.parent
+      parent: item.parent,
+      owner: item.owner
     }
     return total;
   }, {});
-  // localStorage.setItem("items", JSON.stringify(itemsArray));
+  localStorage.setItem("items", JSON.stringify(itemsObj));
 }
 
 
 function getListsLocal(){
   const lists = JSON.parse(localStorage.getItem("lists"));
-  console.log("lists from local: ", lists);
   return lists;
 }
 
