@@ -5,6 +5,8 @@
   "main": "start.js",
   "scripts": {
     "serve": "nodemon start.js --ignore dist/",
+    "start": "node start.js",
+    "build": "npm run webpack",
     "webpack": "webpack --watch",
     "dev": "concurrently \"yarn webpack\" \"yarn serve\" --names \" 📦 , 💻 \" --prefix name",
     "loadSampleData": "node ./data/loadData.js",
