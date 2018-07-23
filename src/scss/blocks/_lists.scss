@@ -3,13 +3,26 @@
 // }
 
 .lists__container {
-  display: flex;
+  // display: flex;
   flex-wrap: wrap;
 }
 
 .list {
-  flex-basis: 1;
   padding: 20px;
-  // margin: 10px;
-  background-color: red;
+  wdth: 100%;
+  // margin: 5px;
+  background-color: $grey1;
 }
+
+.list__header {
+  display: flex;
+}
+
+.list__title {
+  flex-grow: 9;
+}
+
+.list__open {
+flex-grow: 1;
+}
+

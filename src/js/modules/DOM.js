@@ -1,5 +1,6 @@
 import TweenLite from 'gsap';
-import { buildList } from './templates';
+import { buildList, buildListContent } from './templates';
+import { getItems, saveItem } from './ajax';
 
 //
 // user admin consatina
@@ -62,8 +63,38 @@ function renderLists(lists) {
   const container = document.querySelector('[rel="js-list-container"]');
   lists.forEach(data => {
     const list = buildList(data);
+    list.querySelector('.list__open').addEventListener('click', toggleListOpen);
     container.appendChild(list);
   });
+}
+
+async function toggleListOpen(){
+  // if open, close  
+  const list = event.target.parentElement.parentElement;
+  if (list.classList.contains('list--closed')) {
+    list.classList.toggle('list--closed');
+    const id = list.dataset.id;
+    const items = await getItems(id);
+    list.appendChild(buildListContent(items));   
+    const options = list.querySelector('.list__options');
+    // bind save item event
+    console.log(list)
+    list.querySelector('[rel="js-add-item"]').addEventListener('click', saveItem)
+
+  } else {
+    list.classList.toggle('list--closed');
+    // remove list content element
+    closeList(list);
+  }
+}
+
+function openList(){
+
+}
+
+function closeList(list){
+  const listContent = list.querySelector('[rel="js-list-content"]');
+  listContent.parentElement.removeChild(listContent);
 }
 
 

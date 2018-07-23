@@ -16,13 +16,8 @@ listButtons.forEach(button => {
 async function init(){
   // If lists div empty get lists via ajax & render
   if (listContainer.innerHTML == '') {
-    console.log("no lists!!")
     const lists = await getLists();
-    // console.log(lists);   
     renderLists(lists);
-    // const lists = await getLists();
-    // console.log(lists);
-    // renderLists(lists);
   }
   // Main form to add lists
   newListForm.addEventListener('submit', saveList);

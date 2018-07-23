@@ -5,7 +5,6 @@ import { removeModal } from './modal';
 
 function deleteUser(event) {
   const id = event.target.dataset.id;
-  console.log(id)
   const parent = document.querySelector(`div[data-id="${id}"]`)
   const url = "/users";
   Axios({ method: 'delete', url: `${url}`, data: { id: id } })
@@ -21,16 +20,16 @@ function deleteUser(event) {
 }
 
 function saveItem(){
-  const parent = event.target.parentElement.parentElement;
+  const parent = event.target.parentElement.parentElement.parentElement;
   const parentId = parent.dataset.id;
   const title = parent.querySelector('input').value;
-  const url = "/items";
+  const url = "/API/items";
   const data = {
-    list: parentId,
+    parent: parentId,
     title: title
   }
   Axios.post(url, data)
-    .then(response => console.log(response))
+    .then(response => console.log("saveItem() response: ", response))
     .catch(console.log(error));
 }
 
@@ -40,8 +39,8 @@ async function saveList(event) {
   const data = {
     title: title
   }
-  const res = await axios.post(this.action, data);
-  console.log(res.data)
+  const res = await Axios.post(this.action, data);
+  console.log("saveList() response: ", res.data)
 
 }
 
@@ -51,20 +50,12 @@ async function getLists(){
 }
 
 
-function getItems(){
-  const parent = event.target.parentElement.parentElement;
-  const parentId = parent.dataset.id;
-  const url = '/API/items';
-  const data = {
-    _id: parentId
-  }
-  Axios.get(url, data)
-    .then(response => {
-      return data;
-    })
-    .catch(
-      console.log(error)
-    )
+async function getItems(id){
+  const parent = document.querySelector(`[data-id="${id}"]`);
+  const url = `/API/items?listId=${id}`;
+  const items = await Axios.get(url);
+  console.log("getItems() response : ", items)
+  return items;
 }
 
 export { deleteUser, saveItem, saveList, getLists, getItems }

@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function(){
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleUserOptions", function() { return toggleUserOptions; });
 /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48);
 
 
 
@@ -199,6 +199,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderLists", function() { return renderLists; });
 /* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
+
 
 
 
@@ -263,8 +265,38 @@ function renderLists(lists) {
   const container = document.querySelector('[rel="js-list-container"]');
   lists.forEach(data => {
     const list = Object(_templates__WEBPACK_IMPORTED_MODULE_1__["buildList"])(data);
+    list.querySelector('.list__open').addEventListener('click', toggleListOpen);
     container.appendChild(list);
   });
+}
+
+async function toggleListOpen(){
+  // if open, close  
+  const list = event.target.parentElement.parentElement;
+  if (list.classList.contains('list--closed')) {
+    list.classList.toggle('list--closed');
+    const id = list.dataset.id;
+    const items = await Object(_ajax__WEBPACK_IMPORTED_MODULE_2__["getItems"])(id);
+    list.appendChild(Object(_templates__WEBPACK_IMPORTED_MODULE_1__["buildListContent"])(items));   
+    const options = list.querySelector('.list__options');
+    // bind save item event
+    console.log(list)
+    list.querySelector('[rel="js-add-item"]').addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_2__["saveItem"])
+
+  } else {
+    list.classList.toggle('list--closed');
+    // remove list content element
+    closeList(list);
+  }
+}
+
+function openList(){
+
+}
+
+function closeList(list){
+  const listContent = list.querySelector('[rel="js-list-content"]');
+  listContent.parentElement.removeChild(listContent);
 }
 
 
@@ -8716,29 +8748,68 @@ const ExpoScaleEase = _TweenLite_js__WEBPACK_IMPORTED_MODULE_0__["_gsScope"].Exp
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "buildList", function() { return buildList; });
-/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "buildListContent", function() { return buildListContent; });
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 
+
+/*
+
+  All functions in this file return a HTML element ready to be appended
+  to the DOM by another function somewhere else
+
+  ++ Each one should accept full JSON object i.e:
+
+  {
+    _id: "diva786sc7ds6cd76cd9",
+    title: "Important item",
+    parent: "sdfdsac987c98ds7c9sa"
+  }
+
+*/
 
 function buildList(data) {
-  console.log(data)
   const list = document.createElement('div');
-  list.classList = "list";
+  list.classList = "list list--closed";
+  list.dataset.id = data._id;
   const title = data.title;
   list.innerHTML = `
-    <div class="list__title">
-      <span>${title}</span>
-      <i class="fas fa-cog.list__open" rel="js-"></i>
-    </div>
-    <div class="list__content">
-    
-    </div>
-    <div class="list__options">
-      <input class="list__options__input" type="text" rel="js-item-list-input">
-      <button class="button value="Add Item" list__options__save" rel="js-new-item-save">
+    <div class="list__header">
+      <h3 class="list__title">${title}</h3>
+      <i class="fas fa-cog list__open" rel="js-list-open"></i>
     </div>`;
-  // bind events:
-  list.querySelector('[rel="js-new-item-save"]').addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_0__["saveItem"]);
   return list;
+}
+
+
+function buildListContent(data){
+  const el = document.createElement('div');
+  el.classList = "list__content"; 
+  el.setAttribute('rel', 'js-list-content');
+  el.innerHTML = `    
+  <div class="list__options">
+  <input name="item-title" type="text" rel="js-add-item-input">
+  <button class="button" rel="js-add-item">Add Item</button>
+  </div>`;
+  // build and append list items based on ajax data
+  // data from ajax call
+  const items = data.data;
+  if (items.length > 0) {
+    const optionsEl = el.querySelector('.list__options');
+    console.log(optionsEl)
+    items.forEach(item => {
+      el.insertBefore(buildListItem(item), optionsEl);
+      console.log(item);
+    })  
+  }
+  return el;
+}
+
+function buildListItem(item){
+  const title = item.title;
+  const el = document.createElement('div');
+  el.innerHTML = `
+    <span>${title}</span>`;
+  return el;
 }
 
  
@@ -8749,51 +8820,16 @@ function buildList(data) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderModal", function() { return renderModal; });
-/* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
-/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20);
-
-
-
-function renderModal(event){
-  const id = event.target.dataset.id;
-  const modalContainer = document.createElement('div');
-  modalContainer.classList = 'modal-container modal-container--hidden';
-  modalContainer.innerHTML = `
-    <section class="modal">
-      <h3>Are you sure??</h3>
-      <button class="button delete-user--sure" rel="js-modal-delete" data-id="${id}" value="Delete user">Delete Userrrr</button>
-      <button class="button" rel="js-modal-close">Close</button>
-    </section>`;
-    document.querySelector('body').appendChild(modalContainer);
-    Object(_DOM__WEBPACK_IMPORTED_MODULE_0__["showModal"])(modalContainer);
-    modalContainer.querySelector('[rel="js-modal-delete"]').addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_1__["deleteUser"]);
-    modalContainer.querySelector('[rel="js-modal-close"]').addEventListener('click', removeModal);
-}
-
-function removeModal(){
-  const modalContainer = document.querySelector('.modal-container');
-  Object(_DOM__WEBPACK_IMPORTED_MODULE_0__["hideModal"])(modalContainer);
-}
-
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUser", function() { return deleteUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItem", function() { return saveItem; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveList", function() { return saveList; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLists", function() { return getLists; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getItems", function() { return getItems; });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _flashes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48);
-/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19);
+/* harmony import */ var _flashes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(47);
+/* harmony import */ var _modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(48);
 
 
 
@@ -8801,7 +8837,6 @@ __webpack_require__.r(__webpack_exports__);
 
 function deleteUser(event) {
   const id = event.target.dataset.id;
-  console.log(id)
   const parent = document.querySelector(`div[data-id="${id}"]`)
   const url = "/users";
   axios__WEBPACK_IMPORTED_MODULE_0___default()({ method: 'delete', url: `${url}`, data: { id: id } })
@@ -8817,16 +8852,16 @@ function deleteUser(event) {
 }
 
 function saveItem(){
-  const parent = event.target.parentElement.parentElement;
+  const parent = event.target.parentElement.parentElement.parentElement;
   const parentId = parent.dataset.id;
   const title = parent.querySelector('input').value;
-  const url = "/items";
+  const url = "/API/items";
   const data = {
-    list: parentId,
+    parent: parentId,
     title: title
   }
   axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(url, data)
-    .then(response => console.log(response))
+    .then(response => console.log("saveItem() response: ", response))
     .catch(console.log(error));
 }
 
@@ -8836,8 +8871,8 @@ async function saveList(event) {
   const data = {
     title: title
   }
-  const res = await axios.post(this.action, data);
-  console.log(res.data)
+  const res = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.action, data);
+  console.log("saveList() response: ", res.data)
 
 }
 
@@ -8847,41 +8882,33 @@ async function getLists(){
 }
 
 
-function getItems(){
-  const parent = event.target.parentElement.parentElement;
-  const parentId = parent.dataset.id;
-  const url = '/API/items';
-  const data = {
-    _id: parentId
-  }
-  axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(url, data)
-    .then(response => {
-      return data;
-    })
-    .catch(
-      console.log(error)
-    )
+async function getItems(id){
+  const parent = document.querySelector(`[data-id="${id}"]`);
+  const url = `/API/items?listId=${id}`;
+  const items = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(url);
+  console.log("getItems() response : ", items)
+  return items;
 }
 
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(22);
+module.exports = __webpack_require__(21);
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
-var bind = __webpack_require__(24);
-var Axios = __webpack_require__(26);
-var defaults = __webpack_require__(27);
+var utils = __webpack_require__(22);
+var bind = __webpack_require__(23);
+var Axios = __webpack_require__(25);
+var defaults = __webpack_require__(26);
 
 /**
  * Create an instance of Axios
@@ -8914,15 +8941,15 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(45);
-axios.CancelToken = __webpack_require__(46);
-axios.isCancel = __webpack_require__(42);
+axios.Cancel = __webpack_require__(44);
+axios.CancelToken = __webpack_require__(45);
+axios.isCancel = __webpack_require__(41);
 
 // Expose all/spread
 axios.all = function all(promises) {
   return Promise.all(promises);
 };
-axios.spread = __webpack_require__(47);
+axios.spread = __webpack_require__(46);
 
 module.exports = axios;
 
@@ -8931,14 +8958,14 @@ module.exports.default = axios;
 
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var bind = __webpack_require__(24);
-var isBuffer = __webpack_require__(25);
+var bind = __webpack_require__(23);
+var isBuffer = __webpack_require__(24);
 
 /*global toString:true*/
 
@@ -9241,7 +9268,7 @@ module.exports = {
 
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9259,7 +9286,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports) {
 
 /*!
@@ -9286,16 +9313,16 @@ function isSlowBuffer (obj) {
 
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var defaults = __webpack_require__(27);
-var utils = __webpack_require__(23);
-var InterceptorManager = __webpack_require__(39);
-var dispatchRequest = __webpack_require__(40);
+var defaults = __webpack_require__(26);
+var utils = __webpack_require__(22);
+var InterceptorManager = __webpack_require__(38);
+var dispatchRequest = __webpack_require__(39);
 
 /**
  * Create a new instance of Axios
@@ -9372,14 +9399,14 @@ module.exports = Axios;
 
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
-var utils = __webpack_require__(23);
-var normalizeHeaderName = __webpack_require__(29);
+var utils = __webpack_require__(22);
+var normalizeHeaderName = __webpack_require__(28);
 
 var DEFAULT_CONTENT_TYPE = {
   'Content-Type': 'application/x-www-form-urlencoded'
@@ -9395,10 +9422,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(30);
+    adapter = __webpack_require__(29);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(30);
+    adapter = __webpack_require__(29);
   }
   return adapter;
 }
@@ -9473,10 +9500,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28)))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(27)))
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -9666,13 +9693,13 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 module.exports = function normalizeHeaderName(headers, normalizedName) {
   utils.forEach(headers, function processHeader(value, name) {
@@ -9685,19 +9712,19 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
-var settle = __webpack_require__(31);
-var buildURL = __webpack_require__(34);
-var parseHeaders = __webpack_require__(35);
-var isURLSameOrigin = __webpack_require__(36);
-var createError = __webpack_require__(32);
-var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(37);
+var utils = __webpack_require__(22);
+var settle = __webpack_require__(30);
+var buildURL = __webpack_require__(33);
+var parseHeaders = __webpack_require__(34);
+var isURLSameOrigin = __webpack_require__(35);
+var createError = __webpack_require__(31);
+var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(36);
 
 module.exports = function xhrAdapter(config) {
   return new Promise(function dispatchXhrRequest(resolve, reject) {
@@ -9794,7 +9821,7 @@ module.exports = function xhrAdapter(config) {
     // This is only done if running in a standard browser environment.
     // Specifically not if we're in a web worker, or react-native.
     if (utils.isStandardBrowserEnv()) {
-      var cookies = __webpack_require__(38);
+      var cookies = __webpack_require__(37);
 
       // Add xsrf header
       var xsrfValue = (config.withCredentials || isURLSameOrigin(config.url)) && config.xsrfCookieName ?
@@ -9872,13 +9899,13 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 31 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var createError = __webpack_require__(32);
+var createError = __webpack_require__(31);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -9905,13 +9932,13 @@ module.exports = function settle(resolve, reject, response) {
 
 
 /***/ }),
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var enhanceError = __webpack_require__(33);
+var enhanceError = __webpack_require__(32);
 
 /**
  * Create an Error with the specified message, config, error code, request and response.
@@ -9930,7 +9957,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -9958,13 +9985,13 @@ module.exports = function enhanceError(error, config, code, request, response) {
 
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 function encode(val) {
   return encodeURIComponent(val).
@@ -10031,13 +10058,13 @@ module.exports = function buildURL(url, params, paramsSerializer) {
 
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 // Headers whose duplicates are ignored by node
 // c.f. https://nodejs.org/api/http.html#http_message_headers
@@ -10091,13 +10118,13 @@ module.exports = function parseHeaders(headers) {
 
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -10166,7 +10193,7 @@ module.exports = (
 
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10209,13 +10236,13 @@ module.exports = btoa;
 
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 module.exports = (
   utils.isStandardBrowserEnv() ?
@@ -10269,13 +10296,13 @@ module.exports = (
 
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 function InterceptorManager() {
   this.handlers = [];
@@ -10328,18 +10355,18 @@ module.exports = InterceptorManager;
 
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
-var transformData = __webpack_require__(41);
-var isCancel = __webpack_require__(42);
-var defaults = __webpack_require__(27);
-var isAbsoluteURL = __webpack_require__(43);
-var combineURLs = __webpack_require__(44);
+var utils = __webpack_require__(22);
+var transformData = __webpack_require__(40);
+var isCancel = __webpack_require__(41);
+var defaults = __webpack_require__(26);
+var isAbsoluteURL = __webpack_require__(42);
+var combineURLs = __webpack_require__(43);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -10421,13 +10448,13 @@ module.exports = function dispatchRequest(config) {
 
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var utils = __webpack_require__(23);
+var utils = __webpack_require__(22);
 
 /**
  * Transform the data for a request or a response
@@ -10448,7 +10475,7 @@ module.exports = function transformData(data, headers, fns) {
 
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10460,7 +10487,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10481,7 +10508,7 @@ module.exports = function isAbsoluteURL(url) {
 
 
 /***/ }),
-/* 44 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10502,7 +10529,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10528,13 +10555,13 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Cancel = __webpack_require__(45);
+var Cancel = __webpack_require__(44);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -10592,7 +10619,7 @@ module.exports = CancelToken;
 
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10626,7 +10653,7 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -10648,6 +10675,41 @@ function renderFlash(type) {
   </div>`;
   box.querySelector('.flash--hidden').classList.toggle('flash--hidden');
   setTimeout(removeFlash, 1500);
+}
+
+
+
+/***/ }),
+/* 48 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderModal", function() { return renderModal; });
+/* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
+
+
+
+function renderModal(event){
+  const id = event.target.dataset.id;
+  const modalContainer = document.createElement('div');
+  modalContainer.classList = 'modal-container modal-container--hidden';
+  modalContainer.innerHTML = `
+    <section class="modal">
+      <h3>Are you sure??</h3>
+      <button class="button delete-user--sure" rel="js-modal-delete" data-id="${id}" value="Delete user">Delete Userrrr</button>
+      <button class="button" rel="js-modal-close">Close</button>
+    </section>`;
+    document.querySelector('body').appendChild(modalContainer);
+    Object(_DOM__WEBPACK_IMPORTED_MODULE_0__["showModal"])(modalContainer);
+    modalContainer.querySelector('[rel="js-modal-delete"]').addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_1__["deleteUser"]);
+    modalContainer.querySelector('[rel="js-modal-close"]').addEventListener('click', removeModal);
+}
+
+function removeModal(){
+  const modalContainer = document.querySelector('.modal-container');
+  Object(_DOM__WEBPACK_IMPORTED_MODULE_0__["hideModal"])(modalContainer);
 }
 
 
@@ -18704,7 +18766,7 @@ function toggleMobNav(){
 
 //# sourceMappingURL=bling.js.map
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(28), __webpack_require__(51)(module), __webpack_require__(52).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(27), __webpack_require__(51)(module), __webpack_require__(52).Buffer))
 
 /***/ }),
 /* 51 */
@@ -20797,7 +20859,7 @@ module.exports = Array.isArray || function (arr) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
-/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 
 
@@ -20817,13 +20879,8 @@ listButtons.forEach(button => {
 async function init(){
   // If lists div empty get lists via ajax & render
   if (listContainer.innerHTML == '') {
-    console.log("no lists!!")
     const lists = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getLists"])();
-    // console.log(lists);   
     Object(_DOM__WEBPACK_IMPORTED_MODULE_1__["renderLists"])(lists);
-    // const lists = await getLists();
-    // console.log(lists);
-    // renderLists(lists);
   }
   // Main form to add lists
   newListForm.addEventListener('submit', _ajax__WEBPACK_IMPORTED_MODULE_0__["saveList"]);

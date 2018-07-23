@@ -31,7 +31,8 @@ router.delete('/users', userController.deleteUser);
 router.get('/API/lists', authController.isLoggedIn, listController.getLists);
 router.post('/API/lists', authController.isLoggedIn, listController.save);
 
-router.post('/API/items', authController.isLoggedIn, itemController.save);
+router.get('/API/items', authController.isLoggedIn, itemController.getItems);
+router.post('/API/items', authController.isLoggedIn, itemController.saveItem);
 
 
 

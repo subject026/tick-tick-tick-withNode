@@ -234,11 +234,19 @@ body, html {
   transform: translateY(100%); }
 
 .lists__container {
-  display: flex;
   flex-wrap: wrap; }
 
 .list {
-  flex-basis: 1;
   padding: 20px;
-  background-color: red; }
+  wdth: 100%;
+  background-color: #b5b5b5; }
+
+.list__header {
+  display: flex; }
+
+.list__title {
+  flex-grow: 9; }
+
+.list__open {
+  flex-grow: 1; }
 

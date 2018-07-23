@@ -7,8 +7,9 @@ exports.index = async (req, res) => {
 }
 
 // AJAX API
-exports.save = async (req, res) => {
+exports.saveItem = async (req, res) => {
   req.body.owner = req.user._id;
+  // const parent = req.body.parent;
   const item = new Item(req.body);
   try {
     await item.save();
@@ -23,4 +24,11 @@ exports.save = async (req, res) => {
     }
   }
   res.json(save);
+}
+
+exports.getItems = async (req, res) => {
+  const parentId = req.query.listId;
+  const items = await Item.find({parent: parentId});
+  console.log("item.find()... : ", items);
+  res.json(items);
 }

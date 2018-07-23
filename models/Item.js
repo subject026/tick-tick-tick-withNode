@@ -10,7 +10,7 @@ const itemSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  list: {
+  parent: {
     type: String,
     required: true
   },
