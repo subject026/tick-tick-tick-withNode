@@ -6,18 +6,21 @@ exports.index = async (req, res) => {
   res.render('lists', {lists});
 }
 
+exports.getLists = async (req, res) => {
+  const lists = await List.find({ owner: req.user._id });
+  res.json(lists);
+}
+
 // AJAX API
 
 exports.save = async (req, res) => {
-  console.log("Save a list?!?!?!")
-  // console.log(req.user);
   req.body.owner = req.user._id;
   console.log(req.body)
   const list = new List(req.body)
   try {
     await list.save();
-  } catch(error) {
-    res.json({error: error});
+  } catch (error) {
+    res.json({ error: error });
     return;
   }
   const save = {

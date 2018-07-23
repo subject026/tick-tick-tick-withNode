@@ -1,4 +1,8 @@
 import TweenLite from 'gsap';
+import { buildList } from './templates';
+
+//
+// user admin consatina
 
 function slideDown(el){
   TweenLite.to(el, 0.4, {
@@ -21,7 +25,8 @@ function slideUp(el) {
   });
 }
 
-
+//
+// Modal Stuff
 
 function showModal(el){
   TweenLite.to(el, 0.4, {
@@ -45,5 +50,23 @@ function hideModal(){
   });
 }
 
+//
+// Render Lists
 
-export { slideUp, slideDown, showModal, hideModal }
+function renderList(title){
+  const listEl = buildList({title: title});
+  console.log(listEl);
+}
+
+function renderLists(lists) {
+  const container = document.querySelector('[rel="js-list-container"]');
+  lists.forEach(data => {
+    const list = buildList(data);
+    container.appendChild(list);
+  });
+}
+
+
+export { slideUp, slideDown,
+          showModal, hideModal,
+          renderList, renderLists }

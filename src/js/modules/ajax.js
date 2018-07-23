@@ -34,4 +34,37 @@ function saveItem(){
     .catch(console.log(error));
 }
 
-export { deleteUser, saveItem }
+async function saveList(event) {
+  const title = event.target.parentElement.querySelector('input').value;
+  event.preventDefault();
+  const data = {
+    title: title
+  }
+  const res = await axios.post(this.action, data);
+  console.log(res.data)
+
+}
+
+async function getLists(){
+  const response = await Axios.get('/API/lists');  
+  return response.data;
+}
+
+
+function getItems(){
+  const parent = event.target.parentElement.parentElement;
+  const parentId = parent.dataset.id;
+  const url = '/API/items';
+  const data = {
+    _id: parentId
+  }
+  Axios.get(url, data)
+    .then(response => {
+      return data;
+    })
+    .catch(
+      console.log(error)
+    )
+}
+
+export { deleteUser, saveItem, saveList, getLists, getItems }

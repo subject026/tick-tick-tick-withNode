@@ -18,12 +18,22 @@ router.post('/login', authController.login);
 router.get('/logout', authController.logout);
 
 router.get('/lists', authController.isLoggedIn, listController.index);
-router.post('/lists', authController.isLoggedIn, listController.save);
-router.post('/items', authController.isLoggedIn, itemController.save);
 
 router.get('/admin', authController.isLoggedIn, adminController.userAdmin);
 
 router.delete('/users', userController.deleteUser);
+
+
+
+//
+// AJAX API Business
+
+router.get('/API/lists', authController.isLoggedIn, listController.getLists);
+router.post('/API/lists', authController.isLoggedIn, listController.save);
+
+router.post('/API/items', authController.isLoggedIn, itemController.save);
+
+
 
 
 module.exports = router;
