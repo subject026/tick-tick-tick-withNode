@@ -1,5 +1,35 @@
 
 
+    Functionality to add
+
++++++++++++++++++++++++++++++++
+
+
+DONE  //Turn input/button to add item into a form so can submit with return
+      // Clear input & retain focus on submit
+
+
+      // On save list/item  - save to local storage
+                              (load user_id into local storage to use when saving lists/items to localStorage)
+
+                            - save to DB
+                            - render to DOM
+
+
+
+== Front end Modules  ==
+
+  - Event handlers
+  - send Ajax -> return data
+  - localStorage i/o
+  
+  DOM
+    - return HTML/element based on data passed in
+    - insert / append elements to DOM
+
+
+
+
     Pattern - Flow
 ************************
 
@@ -20,23 +50,6 @@ Front end action (add/update/delete list/item)
   update localStorage
   update DOM
   update DB
-
-
-
-
-    Functionality to add
-
-+++++++++++++++++++++++++++++++
-
-
-// Turn input/button to add item into a form so can submit with return
-// Clear input & retain focus on submit
-
-
-// On save list/item  - save to local storage
-                      - save to DB
-                      - render to DOM
-
 
 
 

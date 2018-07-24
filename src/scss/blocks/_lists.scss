@@ -8,13 +8,13 @@
 }
 
 .list {
-  padding: 20px;
-  wdth: 100%;
-  // margin: 5px;
+  width: 100%;
+  margin: 5px;
   background-color: $grey1;
 }
 
 .list__header {
+  background-color: $grey2;;
   display: flex;
 }
 

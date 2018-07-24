@@ -1,11 +1,11 @@
-import { getItems, getLists } from './ajax';
+import { getItemsDB, getListsDB } from './ajax';
 
 //
 // Load into local from DB
 
 async function loadLists(){
   // Get from DB
-  const lists = await getLists();
+  const lists = await getListsDB();
   // Load into local storage
   const listObj = lists.reduce((total, list) => {
     total[list._id] = {
@@ -20,7 +20,7 @@ async function loadLists(){
 
 async function loadItems(){
   // Items loaded into local storage 
-  const items = await getItems();
+  const items = await getItemsDB();
   const itemsObj = items.reduce((total, item) => {
     total[item._id] = {
       title: item.title,
@@ -53,5 +53,14 @@ function getItemsLocal(listId){
   return itemsArray;
 }
 
+function saveListLocal(data){
+  console.log(data)
+}
 
-export { loadItems, loadLists, getListsLocal, getItemsLocal }
+function saveItemLocal(data){
+  console.log(data)
+
+}
+
+
+export { loadItems, loadLists,getListsLocal, getItemsLocal, saveListLocal, saveItemLocal }

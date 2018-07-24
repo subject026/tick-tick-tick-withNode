@@ -34,10 +34,12 @@ function buildListContent(items){
   el.classList = "list__content"; 
   el.setAttribute('rel', 'js-list-content');
   el.innerHTML = `    
-  <div class="list__options">
-  <input name="item-title" type="text" rel="js-add-item-input">
-  <button class="button" rel="js-add-item">Add Item</button>
-  </div>`;
+    <div class="list__options">
+      <form>
+        <input name="item-title" type="text" rel="js-add-item-input">
+        <button class="button" rel="js-add-item">Add Item</button>
+      </form>
+    </div>`;
   // build and append list items based on ajax data
   // data from ajax call
   if (items.length > 0) {

@@ -99,10 +99,10 @@ module.exports = __webpack_require__(58);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_adminOptions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _modules_mobNav__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
-/* harmony import */ var bling__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(50);
+/* harmony import */ var _modules_mobNav__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(50);
+/* harmony import */ var bling__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(51);
 /* harmony import */ var bling__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bling__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _modules_list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56);
+/* harmony import */ var _modules_list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
 
 
 
@@ -200,7 +200,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var gsap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _templates__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
-/* harmony import */ var _localStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(57);
+/* harmony import */ var _localStorage__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(49);
 
 
 
@@ -8788,10 +8788,12 @@ function buildListContent(items){
   el.classList = "list__content"; 
   el.setAttribute('rel', 'js-list-content');
   el.innerHTML = `    
-  <div class="list__options">
-  <input name="item-title" type="text" rel="js-add-item-input">
-  <button class="button" rel="js-add-item">Add Item</button>
-  </div>`;
+    <div class="list__options">
+      <form>
+        <input name="item-title" type="text" rel="js-add-item-input">
+        <button class="button" rel="js-add-item">Add Item</button>
+      </form>
+    </div>`;
   // build and append list items based on ajax data
   // data from ajax call
   if (items.length > 0) {
@@ -8819,11 +8821,11 @@ function buildListItem(item){
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUser", function() { return deleteUser; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItem", function() { return saveItem; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveList", function() { return saveList; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getLists", function() { return getLists; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getItems", function() { return getItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "deleteUserDB", function() { return deleteUserDB; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItemDB", function() { return saveItemDB; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveListDB", function() { return saveListDB; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getListsDB", function() { return getListsDB; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getItemsDB", function() { return getItemsDB; });
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(20);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
@@ -8834,7 +8836,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function deleteUser(event) {
+function deleteUserDB(event) {
   const id = event.target.dataset.id;
   const parent = document.querySelector(`div[data-id="${id}"]`)
   const url = "/users";
@@ -8850,7 +8852,7 @@ function deleteUser(event) {
     });
 }
 
-function saveItem(){
+function saveItemDB(){
   const parent = event.target.parentElement.parentElement.parentElement;
   const parentId = parent.dataset.id;
   const title = parent.querySelector('input').value;
@@ -8864,7 +8866,7 @@ function saveItem(){
     .catch(console.log(error));
 }
 
-async function saveList(event) {
+async function saveListDB(event) {
   const title = event.target.parentElement.querySelector('input').value;
   event.preventDefault();
   const data = {
@@ -8873,13 +8875,13 @@ async function saveList(event) {
   const res = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.action, data);
 }
 
-async function getLists(){
+async function getListsDB(){
   const response = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/API/lists');  
   return response.data;
 }
 
 
-async function getItems(id){
+async function getItemsDB(id){
   const response = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(`/API/items`);
   return response.data;
 }
@@ -10714,6 +10716,86 @@ function removeModal(){
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadItems", function() { return loadItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadLists", function() { return loadLists; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getListsLocal", function() { return getListsLocal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getItemsLocal", function() { return getItemsLocal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveListLocal", function() { return saveListLocal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItemLocal", function() { return saveItemLocal; });
+/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
+
+
+//
+// Load into local from DB
+
+async function loadLists(){
+  // Get from DB
+  const lists = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getListsDB"])();
+  // Load into local storage
+  const listObj = lists.reduce((total, list) => {
+    total[list._id] = {
+      title: list.title,
+      owner: list.owner,
+      created: list.created
+    }
+    return total;
+  }, {});
+  localStorage.setItem("lists", JSON.stringify(listObj));
+}
+
+async function loadItems(){
+  // Items loaded into local storage 
+  const items = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getItemsDB"])();
+  const itemsObj = items.reduce((total, item) => {
+    total[item._id] = {
+      title: item.title,
+      parent: item.parent,
+      owner: item.owner
+    }
+    return total;
+  }, {});
+  localStorage.setItem("items", JSON.stringify(itemsObj));
+}
+
+
+function getListsLocal(){
+  const lists = JSON.parse(localStorage.getItem("lists"));
+  return lists;
+}
+
+function getItemsLocal(listId){
+  const items = JSON.parse(localStorage.getItem("items"));
+  const itemsArray = [];
+  for (let item in items) {
+    if (items[item].parent == listId) {
+      const obj = {
+        _id: items[item]._id,
+        title: items[item].title
+      }
+      itemsArray.push(obj);
+    }
+  }
+  return itemsArray;
+}
+
+function saveListLocal(data){
+  console.log(data)
+}
+
+function saveItemLocal(data){
+  console.log(data)
+
+}
+
+
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toggleMobNav", function() { return toggleMobNav; });
 const sideBar = document.querySelector('.sidebar');
 
@@ -10724,7 +10806,7 @@ function toggleMobNav(){
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(process, module, Buffer) {// Generated by CoffeeScript 1.12.6
@@ -18760,10 +18842,10 @@ function toggleMobNav(){
 
 //# sourceMappingURL=bling.js.map
 
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(27), __webpack_require__(51)(module), __webpack_require__(52).Buffer))
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(27), __webpack_require__(52)(module), __webpack_require__(53).Buffer))
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -18791,7 +18873,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18805,9 +18887,9 @@ module.exports = function(module) {
 
 
 
-var base64 = __webpack_require__(53)
-var ieee754 = __webpack_require__(54)
-var isArray = __webpack_require__(55)
+var base64 = __webpack_require__(54)
+var ieee754 = __webpack_require__(55)
+var isArray = __webpack_require__(56)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -20588,7 +20670,7 @@ function isnan (val) {
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(7)))
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20746,7 +20828,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -20836,7 +20918,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -20847,15 +20929,16 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
-/* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
-/* harmony import */ var _localStorage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(57);
+/* harmony import */ var _localStorage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(49);
+/* harmony import */ var _DOM__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+
 
 
 
@@ -20864,97 +20947,40 @@ const newListForm = $('[rel="js-add-list-form"]')[0];
 const newTextInput = $('[rel="js-list-save-input"]')[0];
 const listContainer = $('.lists__container')[0];
 
-// Bind event to add item to each list
-const listButtons = $('[rel="js-new-item-save"]');
-listButtons.forEach(button => {
-  console.log(button.parentElement.parentElement.dataset.id) // List ID
-  button.addEventListener('click', _ajax__WEBPACK_IMPORTED_MODULE_0__["saveItem"]);
-});
+
+// When form is submitted to add a new list we can't use DB id so generate a temporary one...
+
+function saveList(event){
+  event.preventDefault();
+  console.log(this)
+  const input = this.querySelector('[rel="js-list-save-input"]');
+  const tempId = "temp-" + Math.floor(Math.random(0, 1) * 10000000000);
+  const data = {
+    _id: tempId,
+    title: input.value,
+    // parent: 
+  }
+  console.log(data)
+  // Save to local
+  // Save to DB
+  // Render list to DOM
+}
 
 
-async function init(){
+function init(){
   // 1. load lists into local storage
-  Object(_localStorage__WEBPACK_IMPORTED_MODULE_2__["loadLists"])();
+  Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["loadLists"])();
   // 2. get lists out of local storage and render to page
-  Object(_DOM__WEBPACK_IMPORTED_MODULE_1__["renderLists"])(Object(_localStorage__WEBPACK_IMPORTED_MODULE_2__["getListsLocal"])())
+  Object(_DOM__WEBPACK_IMPORTED_MODULE_2__["renderLists"])(Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["getListsLocal"])())
   // 3. load items into local storage
-  Object(_localStorage__WEBPACK_IMPORTED_MODULE_2__["loadItems"])();
+  Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["loadItems"])();
   // add list form event
-  newListForm.addEventListener('submit', _ajax__WEBPACK_IMPORTED_MODULE_0__["saveList"]);
+  newListForm.addEventListener('submit', saveList);
 }
 
 const List = {
   init: init 
 }
-
-
-
-/***/ }),
-/* 57 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadItems", function() { return loadItems; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadLists", function() { return loadLists; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getListsLocal", function() { return getListsLocal; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getItemsLocal", function() { return getItemsLocal; });
-/* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
-
-
-//
-// Load into local from DB
-
-async function loadLists(){
-  // Get from DB
-  const lists = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getLists"])();
-  // Load into local storage
-  const listObj = lists.reduce((total, list) => {
-    total[list._id] = {
-      title: list.title,
-      owner: list.owner,
-      created: list.created
-    }
-    return total;
-  }, {});
-  localStorage.setItem("lists", JSON.stringify(listObj));
-}
-
-async function loadItems(){
-  // Items loaded into local storage 
-  const items = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getItems"])();
-  const itemsObj = items.reduce((total, item) => {
-    total[item._id] = {
-      title: item.title,
-      parent: item.parent,
-      owner: item.owner
-    }
-    return total;
-  }, {});
-  localStorage.setItem("items", JSON.stringify(itemsObj));
-}
-
-
-function getListsLocal(){
-  const lists = JSON.parse(localStorage.getItem("lists"));
-  return lists;
-}
-
-function getItemsLocal(listId){
-  const items = JSON.parse(localStorage.getItem("items"));
-  const itemsArray = [];
-  for (let item in items) {
-    if (items[item].parent == listId) {
-      const obj = {
-        _id: items[item]._id,
-        title: items[item].title
-      }
-      itemsArray.push(obj);
-    }
-  }
-  return itemsArray;
-}
-
 
 
 

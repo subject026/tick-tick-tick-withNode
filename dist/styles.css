@@ -237,11 +237,12 @@ body, html {
   flex-wrap: wrap; }
 
 .list {
-  padding: 20px;
-  wdth: 100%;
+  width: 100%;
+  margin: 5px;
   background-color: #b5b5b5; }
 
 .list__header {
+  background-color: #4c4c4c;
   display: flex; }
 
 .list__title {
