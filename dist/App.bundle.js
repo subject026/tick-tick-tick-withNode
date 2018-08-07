@@ -8880,7 +8880,6 @@ async function getListsDB(){
   return response.data;
 }
 
-
 async function getItemsDB(id){
   const response = await axios__WEBPACK_IMPORTED_MODULE_0___default.a.get(`/API/items`);
   return response.data;
@@ -10722,6 +10721,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getItemsLocal", function() { return getItemsLocal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveListLocal", function() { return saveListLocal; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "saveItemLocal", function() { return saveItemLocal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getUserLocal", function() { return getUserLocal; });
 /* harmony import */ var _ajax__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19);
 
 
@@ -10730,9 +10730,10 @@ __webpack_require__.r(__webpack_exports__);
 
 async function loadLists(){
   // Get from DB
-  const lists = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getListsDB"])();
+  const data = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getListsDB"])();
+  console.log(data.lists)
   // Load into local storage
-  const listObj = lists.reduce((total, list) => {
+  const listObj = data.lists.reduce((total, list) => {
     total[list._id] = {
       title: list.title,
       owner: list.owner,
@@ -10741,6 +10742,7 @@ async function loadLists(){
     return total;
   }, {});
   localStorage.setItem("lists", JSON.stringify(listObj));
+  localStorage.setItem("user", JSON.stringify(data.user));
 }
 
 async function loadItems(){
@@ -10784,7 +10786,10 @@ function saveListLocal(data){
 
 function saveItemLocal(data){
   console.log(data)
+}
 
+function getUserLocal(){
+  return JSON.parse(localStorage.getItem("user"));
 }
 
 
@@ -20952,13 +20957,14 @@ const listContainer = $('.lists__container')[0];
 
 function saveList(event){
   event.preventDefault();
-  console.log(this)
+  // console.log("saveList THIS: ", this)   this here is the form DOM element
   const input = this.querySelector('[rel="js-list-save-input"]');
   const tempId = "temp-" + Math.floor(Math.random(0, 1) * 10000000000);
+  console.log(Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["getUserLocal"])())
   const data = {
     _id: tempId,
     title: input.value,
-    // parent: 
+    owner: Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["getUserLocal"])()
   }
   console.log(data)
   // Save to local

@@ -8,7 +8,11 @@ exports.index = async (req, res) => {
 
 exports.getLists = async (req, res) => {
   const lists = await List.find({ owner: req.user._id });
-  res.json(lists);
+  const data = {
+    user: req.user._id,
+    lists: lists
+  }
+  res.json(data);
 }
 
 // AJAX API

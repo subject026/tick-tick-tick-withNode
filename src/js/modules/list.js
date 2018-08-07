@@ -1,7 +1,7 @@
 import { saveListDB, saveItemDB } from './ajax';
 import { saveListLocal, saveItemLocal } from './localStorage';
 import { renderLists } from './DOM';
-import { loadItems, loadLists, getListsLocal } from './localStorage';
+import { loadItems, loadLists, getListsLocal, getUserLocal } from './localStorage';
 
 const newListForm = $('[rel="js-add-list-form"]')[0];
 const newTextInput = $('[rel="js-list-save-input"]')[0];
@@ -12,13 +12,14 @@ const listContainer = $('.lists__container')[0];
 
 function saveList(event){
   event.preventDefault();
-  console.log(this)
+  // console.log("saveList THIS: ", this)   this here is the form DOM element
   const input = this.querySelector('[rel="js-list-save-input"]');
   const tempId = "temp-" + Math.floor(Math.random(0, 1) * 10000000000);
+  console.log(getUserLocal())
   const data = {
     _id: tempId,
     title: input.value,
-    // parent: 
+    owner: getUserLocal()
   }
   console.log(data)
   // Save to local

@@ -47,7 +47,6 @@ async function getListsDB(){
   return response.data;
 }
 
-
 async function getItemsDB(id){
   const response = await Axios.get(`/API/items`);
   return response.data;

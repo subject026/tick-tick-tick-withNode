@@ -5,9 +5,10 @@ import { getItemsDB, getListsDB } from './ajax';
 
 async function loadLists(){
   // Get from DB
-  const lists = await getListsDB();
+  const data = await getListsDB();
+  console.log(data.lists)
   // Load into local storage
-  const listObj = lists.reduce((total, list) => {
+  const listObj = data.lists.reduce((total, list) => {
     total[list._id] = {
       title: list.title,
       owner: list.owner,
@@ -16,6 +17,7 @@ async function loadLists(){
     return total;
   }, {});
   localStorage.setItem("lists", JSON.stringify(listObj));
+  localStorage.setItem("user", JSON.stringify(data.user));
 }
 
 async function loadItems(){
@@ -59,8 +61,11 @@ function saveListLocal(data){
 
 function saveItemLocal(data){
   console.log(data)
+}
 
+function getUserLocal(){
+  return JSON.parse(localStorage.getItem("user"));
 }
 
 
-export { loadItems, loadLists,getListsLocal, getItemsLocal, saveListLocal, saveItemLocal }
+export { loadItems, loadLists,getListsLocal, getItemsLocal, saveListLocal, saveItemLocal, getUserLocal }
