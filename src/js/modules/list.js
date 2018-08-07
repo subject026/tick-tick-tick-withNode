@@ -15,14 +15,13 @@ function saveList(event){
   // console.log("saveList THIS: ", this)   this here is the form DOM element
   const input = this.querySelector('[rel="js-list-save-input"]');
   const tempId = "temp-" + Math.floor(Math.random(0, 1) * 10000000000);
-  console.log(getUserLocal())
   const data = {
     _id: tempId,
     title: input.value,
     owner: getUserLocal()
   }
-  console.log(data)
   // Save to local
+  saveListLocal(data)
   // Save to DB
   // Render list to DOM
 }

@@ -6,7 +6,6 @@ import { getItemsDB, getListsDB } from './ajax';
 async function loadLists(){
   // Get from DB
   const data = await getListsDB();
-  console.log(data.lists)
   // Load into local storage
   const listObj = data.lists.reduce((total, list) => {
     total[list._id] = {
@@ -56,7 +55,18 @@ function getItemsLocal(listId){
 }
 
 function saveListLocal(data){
-  console.log(data)
+  // Get lists object
+  const lists = getListsLocal();
+  // Prepare new list
+  const list = {
+    title: data.title,
+    owner: data.owner,
+    created: Date.now()
+  }
+  // attach to lists object
+  lists[data._id] = list;
+  // resave lists object
+  localStorage.setItem("lists", lists)
 }
 
 function saveItemLocal(data){

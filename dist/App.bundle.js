@@ -10731,7 +10731,6 @@ __webpack_require__.r(__webpack_exports__);
 async function loadLists(){
   // Get from DB
   const data = await Object(_ajax__WEBPACK_IMPORTED_MODULE_0__["getListsDB"])();
-  console.log(data.lists)
   // Load into local storage
   const listObj = data.lists.reduce((total, list) => {
     total[list._id] = {
@@ -10781,7 +10780,18 @@ function getItemsLocal(listId){
 }
 
 function saveListLocal(data){
-  console.log(data)
+  // Get lists object
+  const lists = getListsLocal();
+  // Prepare new list
+  const list = {
+    title: data.title,
+    owner: data.owner,
+    created: Date.now()
+  }
+  // attach to lists object
+  lists[data._id] = list;
+  // resave lists object
+  localStorage.setItem("lists", lists)
 }
 
 function saveItemLocal(data){
@@ -20960,14 +20970,13 @@ function saveList(event){
   // console.log("saveList THIS: ", this)   this here is the form DOM element
   const input = this.querySelector('[rel="js-list-save-input"]');
   const tempId = "temp-" + Math.floor(Math.random(0, 1) * 10000000000);
-  console.log(Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["getUserLocal"])())
   const data = {
     _id: tempId,
     title: input.value,
     owner: Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["getUserLocal"])()
   }
-  console.log(data)
   // Save to local
+  Object(_localStorage__WEBPACK_IMPORTED_MODULE_1__["saveListLocal"])(data)
   // Save to DB
   // Render list to DOM
 }
